@@ -11,24 +11,25 @@ public class GamePanel extends JPanel implements Runnable
    final int scale = 3;
    
    public final int tileSize = originalTileSize * scale; // 48x48 tile
-   final int maxScreenCol = 16;
-   final int maxScreenRow = 12;
-   final int screenWidth = tileSize * maxScreenCol; // 768 pixels
-   final int screenHeight = tileSize * maxScreenRow; // 576 pixels
+   public final int maxScreenCol = 16;
+   public final int maxScreenRow = 12;
+   public final int screenWidth = tileSize * maxScreenCol; // 768 pixels
+   public final int screenHeight = tileSize * maxScreenRow; // 576 pixels
+   
+   // WORLD SETTINGS
+   public final int maxWorldCol = 50;
+   public final int maxWorldRow = 50;
+   public final int worldWidth = tileSize * maxWorldCol;
+   public final int worldHeight = tileSize * maxWorldRow;
    
    // FPS
    int FPS = 60;
    
+   TileManager tileM = new TileManager(this);
+   
    Keybinds keyB = new Keybinds();
    Thread gameThread;
-   Player player = new Player(this,keyB);
-   
-   
-   // Set player's default position
-   int playerX = 100;
-   int playerY = 100;
-   int playerSpeed = 4;
-   
+   public Player player = new Player(this,keyB);
    
    public GamePanel()
    {
@@ -44,40 +45,7 @@ public class GamePanel extends JPanel implements Runnable
        gameThread = new Thread(this);
        gameThread.start();
    }
-   
-//   public void run()
-//   {
-//       double drawInterval = 1000000000/FPS; // 0.01666 seconds
-//       double nextDrawTime = System.nanoTime() + drawInterval;
-//       
-//       while(gameThread != null)
-//       {
-//            update();
-//              
-//            repaint();
-//            
-//            
-//            
-//            try
-//            {
-//                double remainingTime = nextDrawTime - System.nanoTime();
-//                remainingTime = remainingTime/1000000;
-//                
-//            if(remainingTime < 0)
-//                {
-//                    remainingTime = 0;
-//                }
-//                
-//                Thread.sleep((long) remainingTime);
-//                
-//                nextDrawTime += drawInterval;
-//            }
-//            catch (InterruptedException e)
-//            {
-//                e.printStackTrace();
-//            }
-//       }
-//   }
+
    public void run()
    {
        double drawInterval = 1000000000/FPS;
@@ -120,6 +88,8 @@ public class GamePanel extends JPanel implements Runnable
        super.paintComponent(g);
        
        Graphics2D g2 = (Graphics2D)g;
+       
+       tileM.draw(g2);
        
        player.draw(g2);
        
